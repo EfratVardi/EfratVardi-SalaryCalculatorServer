@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Interfaces;
-using BLL.models;
+using DAL.Interfaces;
+using DAL.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,21 @@ using System.Threading.Tasks;
 
 namespace BLL.Functions
 {
-    public class calculateBll : ICalculateBll
+    public class CalculateBll : ICalculateBll
     {
+        ICalculateDal dal;
+
+        public CalculateBll(ICalculateDal dal)
+        {
+            this.dal = dal;
+        }
         public SalaryCalculationResult CalculateSalary(SalaryCalculationInput input)
         {
             // שכר יסוד לפי רמה מקצועית
-            decimal hourlyRate = input.ProfessionalLevel == "Beginner" ? 100 : 120;
+            decimal hourlyRate = input.ProfessionalLevel == 1 ? 100 : 120;
 
             // תוספת ניהול
-            if (int.TryParse(input.ManagementLevel?.Split(' ')[2], out int managementLevel))
-            {
-                hourlyRate += managementLevel * 20;
-            }
+                hourlyRate += input.ManagementLevel * 20;
 
             // שכר יסוד
             decimal baseSalary = hourlyRate * 170 * (input.WorkPercentage / 100m);
@@ -46,7 +50,7 @@ namespace BLL.Functions
                     : 0.01m;
 
             // תוספת רמת ניהול
-            raisePercentage += managementLevel * 0.001m;
+            raisePercentage += input.ManagementLevel * 0.001m;
 
             decimal raiseAmount = initialBaseSalary * raisePercentage;
 

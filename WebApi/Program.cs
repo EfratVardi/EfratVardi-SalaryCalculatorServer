@@ -1,5 +1,7 @@
 using BLL.Functions;
 using BLL.Interfaces;
+using DAL.Functions;
+using DAL.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddScoped(typeof(ICalculateBll), typeof(calculateBll));
+builder.Services.AddScoped(typeof(ICalculateBll), typeof(CalculateBll));
+
+builder.Services.AddScoped(typeof(ICalculateDal), typeof(CalculateDal));
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(

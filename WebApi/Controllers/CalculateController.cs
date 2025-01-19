@@ -1,5 +1,5 @@
 ﻿using BLL.Interfaces;
-using BLL.models;
+using DAL.models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
